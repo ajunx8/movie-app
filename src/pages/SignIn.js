@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import {supabase} from "../supabase";
+import { useAuth } from "../auth";
 
 const SignIn = () => {
+    const auth = useAuth()
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("")
 
@@ -10,18 +11,20 @@ const SignIn = () => {
     const handleSignIn = async (e) => {
         e.preventDefault(); 
 
-        const {error} = await supabase.auth.signIn({email});
+        const signIn = await auth.login(email);
+        // console.log(signIn);
 
-        if (error) {
-            console.log(error);
-        } else {    
-            setMessage("Magic Link has been sent.")
+        if (signIn.error) {
+            setMessage(signIn.error.message)
+        } else {
+            setMessage("Login link has been sent.")
         }
+
+        setEmail("")
     }
 
     return (
         <Layout>
-            {/* display message if we have a message */}
             {message && message}
             <h1>Sign In</h1>
             <form onSubmit={handleSignIn}>
@@ -33,3 +36,5 @@ const SignIn = () => {
 };
 
 export default SignIn; 
+
+//  {/* display message if we have a message */}

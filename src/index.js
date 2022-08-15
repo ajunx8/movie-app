@@ -4,17 +4,21 @@ import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
+import { AuthProvider } from './auth';
+import ProtectedRoute from './components/ProtectedRoute';
+import Profile from './pages/Profile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
+  <AuthProvider>
     <BrowserRouter>
       <Routes>
         <Route index element={<Home />}/>
         <Route path={"sign-in"} element={<SignIn />}/>
+        <Route path={"profile"} element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
       </Routes>
     </BrowserRouter>
-  // </React.StrictMode>
+  </AuthProvider>
 );
   
   // ReactDOM.render(
